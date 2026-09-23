@@ -26,7 +26,10 @@ class PyannoteDiarizer:
             from pyannote.audio import Pipeline  # local import: heavy/optional dep
 
             hf_token = os.environ.get("HF_TOKEN")
-            self._pipeline = Pipeline.from_pretrained(self._pipeline_name, use_auth_token=hf_token)
+            try:
+                self._pipeline = Pipeline.from_pretrained(self._pipeline_name, token=hf_token)
+            except TypeError:
+                self._pipeline = Pipeline.from_pretrained(self._pipeline_name, use_auth_token=hf_token)
         return self._pipeline
 
     def _diarize_sync(self, audio_file_path: str) -> list[SpeakerTurn]:
