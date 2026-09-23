@@ -1,0 +1,129 @@
+{
+  "file_name": "architecture_review.wav",
+  "duration_seconds": 128.449,
+  "speakers": [
+    "SPEAKER_00",
+    "SPEAKER_01"
+  ],
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker_id": "SPEAKER_00",
+      "text": "Today we're reviewing the proposed architecture for the new notification service. Walk us through the design.",
+      "start_time": 0.0,
+      "end_time": 5.666
+    },
+    {
+      "turn_index": 1,
+      "speaker_id": "SPEAKER_01",
+      "text": "The core idea is a queue based system where every notification event gets published to a message broker before being delivered.",
+      "start_time": 6.266,
+      "end_time": 13.148
+    },
+    {
+      "turn_index": 2,
+      "speaker_id": "SPEAKER_01",
+      "text": "Downstream consumers, like email, push notifications, and SMS, each subscribe to the events relevant to their channel.",
+      "start_time": 13.748,
+      "end_time": 22.214
+    },
+    {
+      "turn_index": 3,
+      "speaker_id": "SPEAKER_00",
+      "text": "Why did you choose a message broker instead of having services call each other directly over HTTP?",
+      "start_time": 22.814,
+      "end_time": 28.447
+    },
+    {
+      "turn_index": 4,
+      "speaker_id": "SPEAKER_01",
+      "text": "Direct HTTP calls would tightly couple every producer to every consumer, so adding a new notification channel would require changes everywhere.",
+      "start_time": 29.047,
+      "end_time": 37.722
+    },
+    {
+      "turn_index": 5,
+      "speaker_id": "SPEAKER_01",
+      "text": "With a broker in the middle, we can add a new consumer, like a Slack integration, without touching the producers at all.",
+      "start_time": 38.322,
+      "end_time": 45.209
+    },
+    {
+      "turn_index": 6,
+      "speaker_id": "SPEAKER_00",
+      "text": "That makes sense for extensibility. What database are you planning to use for storing notification history?",
+      "start_time": 45.809,
+      "end_time": 51.775
+    },
+    {
+      "turn_index": 7,
+      "speaker_id": "SPEAKER_01",
+      "text": "We're proposing Postgres, since we already run it in production and the notification volume doesn't require a specialized store yet.",
+      "start_time": 52.375,
+      "end_time": 60.075
+    },
+    {
+      "turn_index": 8,
+      "speaker_id": "SPEAKER_00",
+      "text": "Have you thought about how this system will scale if notification volume grows tenfold?",
+      "start_time": 60.675,
+      "end_time": 65.234
+    },
+    {
+      "turn_index": 9,
+      "speaker_id": "SPEAKER_01",
+      "text": "Yes, the message broker itself can scale horizontally by adding more partitions, and consumers can scale independently based on their own load.",
+      "start_time": 65.834,
+      "end_time": 74.729
+    },
+    {
+      "turn_index": 10,
+      "speaker_id": "SPEAKER_01",
+      "text": "Postgres could become a bottleneck eventually, but we can shard by user id or move to a time series store later if needed.",
+      "start_time": 75.329,
+      "end_time": 82.203
+    },
+    {
+      "turn_index": 11,
+      "speaker_id": "SPEAKER_00",
+      "text": "What about failure handling? What happens if the email consumer goes down for an hour?",
+      "start_time": 82.803,
+      "end_time": 87.704
+    },
+    {
+      "turn_index": 12,
+      "speaker_id": "SPEAKER_01",
+      "text": "Since it's queue based, events just accumulate in the broker until the consumer comes back online, so nothing gets lost.",
+      "start_time": 88.304,
+      "end_time": 95.761
+    },
+    {
+      "turn_index": 13,
+      "speaker_id": "SPEAKER_00",
+      "text": "Good, that's an important reliability property. How are you handling duplicate delivery if a consumer crashes mid processing?",
+      "start_time": 96.361,
+      "end_time": 103.716
+    },
+    {
+      "turn_index": 14,
+      "speaker_id": "SPEAKER_01",
+      "text": "We're using at least once delivery semantics with idempotency keys on each notification, so retries don't create duplicate emails.",
+      "start_time": 104.316,
+      "end_time": 112.689
+    },
+    {
+      "turn_index": 15,
+      "speaker_id": "SPEAKER_00",
+      "text": "This architecture looks solid overall. My main concern is monitoring, make sure we have alerting on queue depth and consumer lag.",
+      "start_time": 113.289,
+      "end_time": 120.509
+    },
+    {
+      "turn_index": 16,
+      "speaker_id": "SPEAKER_01",
+      "text": "Agreed, I'll add dashboards for queue depth, consumer lag, and delivery latency before we roll this out to production.",
+      "start_time": 121.109,
+      "end_time": 128.449
+    }
+  ]
+}

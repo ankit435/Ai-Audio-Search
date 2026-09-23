@@ -1,0 +1,22 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: audio_search_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: audio_search
+      POSTGRES_PASSWORD: audio_search
+      POSTGRES_DB: audio_search
+    ports:
+      - "5432:5432"
+    volumes:
+      - audio_search_pgdata:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U audio_search -d audio_search"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  audio_search_pgdata:

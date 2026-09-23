@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+
+# Local audio dataset (large binary files; source separately per plan)
+data/audio/
+*.wav
+*.mp3
+
+# Model caches
+.cache/
+models/

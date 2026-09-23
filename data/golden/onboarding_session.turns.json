@@ -1,0 +1,129 @@
+{
+  "file_name": "onboarding_session.wav",
+  "duration_seconds": 115.651,
+  "speakers": [
+    "SPEAKER_00",
+    "SPEAKER_01"
+  ],
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker_id": "SPEAKER_00",
+      "text": "Welcome to the team. Today we'll walk through onboarding, starting with your equipment and account setup.",
+      "start_time": 0.0,
+      "end_time": 5.505
+    },
+    {
+      "turn_index": 1,
+      "speaker_id": "SPEAKER_01",
+      "text": "Great, I already have my laptop, but I haven't been able to log into the internal engineering wiki yet.",
+      "start_time": 6.105,
+      "end_time": 12.516
+    },
+    {
+      "turn_index": 2,
+      "speaker_id": "SPEAKER_00",
+      "text": "I'll get IT to grant you access to the wiki right after this call. It has all our engineering guidelines and architecture docs.",
+      "start_time": 13.116,
+      "end_time": 20.125
+    },
+    {
+      "turn_index": 3,
+      "speaker_id": "SPEAKER_01",
+      "text": "Perfect. Can you also tell me about the benefits package, especially the health insurance options?",
+      "start_time": 20.725,
+      "end_time": 27.023
+    },
+    {
+      "turn_index": 4,
+      "speaker_id": "SPEAKER_00",
+      "text": "Sure, we offer two health insurance plans, a standard plan with no premium and a premium plan with lower deductibles for a monthly fee.",
+      "start_time": 27.623,
+      "end_time": 35.634
+    },
+    {
+      "turn_index": 5,
+      "speaker_id": "SPEAKER_01",
+      "text": "How do I choose between the two plans, and is there a deadline to enroll?",
+      "start_time": 36.234,
+      "end_time": 40.523
+    },
+    {
+      "turn_index": 6,
+      "speaker_id": "SPEAKER_00",
+      "text": "You have thirty days from your start date to enroll, and HR will send you a comparison sheet showing the coverage differences.",
+      "start_time": 41.123,
+      "end_time": 47.71
+    },
+    {
+      "turn_index": 7,
+      "speaker_id": "SPEAKER_00",
+      "text": "Let's also cover the on call rotation, since your team participates in production support.",
+      "start_time": 48.31,
+      "end_time": 53.654
+    },
+    {
+      "turn_index": 8,
+      "speaker_id": "SPEAKER_01",
+      "text": "I saw that mentioned in the offer letter. How often would I be on call?",
+      "start_time": 54.254,
+      "end_time": 58.079
+    },
+    {
+      "turn_index": 9,
+      "speaker_id": "SPEAKER_00",
+      "text": "Engineers rotate on call roughly once every six weeks, for a full week at a time, with a senior engineer as backup.",
+      "start_time": 58.679,
+      "end_time": 65.7
+    },
+    {
+      "turn_index": 10,
+      "speaker_id": "SPEAKER_01",
+      "text": "That sounds manageable. What's the typical severity of incidents I might get paged for?",
+      "start_time": 66.3,
+      "end_time": 71.522
+    },
+    {
+      "turn_index": 11,
+      "speaker_id": "SPEAKER_00",
+      "text": "Most pages are low severity, like a slow batch job, but occasionally you'll get paged for something customer facing that needs quick attention.",
+      "start_time": 72.122,
+      "end_time": 80.207
+    },
+    {
+      "turn_index": 12,
+      "speaker_id": "SPEAKER_00",
+      "text": "One more important thing, our code review process. Every pull request needs at least one approval before merging.",
+      "start_time": 80.807,
+      "end_time": 87.392
+    },
+    {
+      "turn_index": 13,
+      "speaker_id": "SPEAKER_01",
+      "text": "Is there a preferred size for pull requests, or is that left up to the individual engineer?",
+      "start_time": 87.992,
+      "end_time": 93.277
+    },
+    {
+      "turn_index": 14,
+      "speaker_id": "SPEAKER_00",
+      "text": "We generally recommend keeping pull requests small enough to review in under twenty minutes, since large diffs tend to get less thorough review.",
+      "start_time": 93.877,
+      "end_time": 101.252
+    },
+    {
+      "turn_index": 15,
+      "speaker_id": "SPEAKER_01",
+      "text": "That's good guidance, thank you. I think I have a much clearer picture of my first few weeks now.",
+      "start_time": 101.852,
+      "end_time": 107.912
+    },
+    {
+      "turn_index": 16,
+      "speaker_id": "SPEAKER_00",
+      "text": "Great, feel free to message me anytime this week if anything about benefits, on call, or the wiki access is unclear.",
+      "start_time": 108.512,
+      "end_time": 115.651
+    }
+  ]
+}

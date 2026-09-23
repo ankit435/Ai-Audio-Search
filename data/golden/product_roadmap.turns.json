@@ -1,0 +1,136 @@
+{
+  "file_name": "product_roadmap.wav",
+  "duration_seconds": 122.334,
+  "speakers": [
+    "SPEAKER_00",
+    "SPEAKER_01"
+  ],
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker_id": "SPEAKER_00",
+      "text": "Let's kick off the quarterly roadmap review. Our top priority for next quarter is improving search latency across the platform.",
+      "start_time": 0.0,
+      "end_time": 7.388
+    },
+    {
+      "turn_index": 1,
+      "speaker_id": "SPEAKER_01",
+      "text": "Agreed. Support tickets about slow search results have gone up almost thirty percent since the last release.",
+      "start_time": 7.988,
+      "end_time": 14.574
+    },
+    {
+      "turn_index": 2,
+      "speaker_id": "SPEAKER_00",
+      "text": "Right, and the engineering team already proposed adding a caching layer in front of the database to cut down repeated queries.",
+      "start_time": 15.174,
+      "end_time": 21.88
+    },
+    {
+      "turn_index": 3,
+      "speaker_id": "SPEAKER_01",
+      "text": "Caching should help a lot, but we also need to prioritize the mobile app redesign that customers have been asking about for months.",
+      "start_time": 22.48,
+      "end_time": 30.016
+    },
+    {
+      "turn_index": 4,
+      "speaker_id": "SPEAKER_00",
+      "text": "That's fair. Let's timebox the redesign to six weeks and make sure it doesn't block the search latency work.",
+      "start_time": 30.616,
+      "end_time": 36.423
+    },
+    {
+      "turn_index": 5,
+      "speaker_id": "SPEAKER_01",
+      "text": "Sounds workable. What about the analytics dashboard the sales team requested last quarter?",
+      "start_time": 37.023,
+      "end_time": 42.469
+    },
+    {
+      "turn_index": 6,
+      "speaker_id": "SPEAKER_00",
+      "text": "I'd like to push that to the following quarter unless someone has a strong argument for doing it sooner.",
+      "start_time": 43.069,
+      "end_time": 48.208
+    },
+    {
+      "turn_index": 7,
+      "speaker_id": "SPEAKER_01",
+      "text": "Sales has been vocal about it, but I think search performance and the mobile redesign are more urgent for retention.",
+      "start_time": 48.808,
+      "end_time": 55.413
+    },
+    {
+      "turn_index": 8,
+      "speaker_id": "SPEAKER_00",
+      "text": "Agreed, retention is the metric leadership cares about most this cycle.",
+      "start_time": 56.013,
+      "end_time": 60.119
+    },
+    {
+      "turn_index": 9,
+      "speaker_id": "SPEAKER_00",
+      "text": "Let's also talk about technical debt. The billing service is still running on the old framework version.",
+      "start_time": 60.719,
+      "end_time": 66.192
+    },
+    {
+      "turn_index": 10,
+      "speaker_id": "SPEAKER_01",
+      "text": "Yes, we should allocate at least one engineer for two weeks to migrate billing off the deprecated framework before it loses support.",
+      "start_time": 66.792,
+      "end_time": 74.294
+    },
+    {
+      "turn_index": 11,
+      "speaker_id": "SPEAKER_00",
+      "text": "Makes sense, security has flagged that as a risk a couple of times already.",
+      "start_time": 74.894,
+      "end_time": 79.229
+    },
+    {
+      "turn_index": 12,
+      "speaker_id": "SPEAKER_01",
+      "text": "One more item, the product roadmap review from marketing wants a public changelog page so customers can see what shipped each week.",
+      "start_time": 79.829,
+      "end_time": 87.517
+    },
+    {
+      "turn_index": 13,
+      "speaker_id": "SPEAKER_00",
+      "text": "I like that idea. It's low effort and it directly addresses customer complaints about not knowing what changed between releases.",
+      "start_time": 88.117,
+      "end_time": 94.94
+    },
+    {
+      "turn_index": 14,
+      "speaker_id": "SPEAKER_01",
+      "text": "I'll draft a one page proposal for the changelog page and share it by Friday.",
+      "start_time": 95.54,
+      "end_time": 100.024
+    },
+    {
+      "turn_index": 15,
+      "speaker_id": "SPEAKER_00",
+      "text": "Great. To summarize, our priorities are search latency improvements, the mobile redesign, the billing framework migration, and the changelog page.",
+      "start_time": 100.624,
+      "end_time": 109.667
+    },
+    {
+      "turn_index": 16,
+      "speaker_id": "SPEAKER_01",
+      "text": "The analytics dashboard and anything else not mentioned gets pushed to next quarter unless something urgent comes up.",
+      "start_time": 110.267,
+      "end_time": 116.384
+    },
+    {
+      "turn_index": 17,
+      "speaker_id": "SPEAKER_00",
+      "text": "Perfect, let's get this roadmap into the planning doc and share it with the wider team tomorrow morning.",
+      "start_time": 116.984,
+      "end_time": 122.334
+    }
+  ]
+}
