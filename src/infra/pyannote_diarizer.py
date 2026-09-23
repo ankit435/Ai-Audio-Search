@@ -35,9 +35,10 @@ class PyannoteDiarizer:
     def _diarize_sync(self, audio_file_path: str) -> list[SpeakerTurn]:
         pipeline = self._load_pipeline()
         diarization = pipeline(audio_file_path)
+        annotation = getattr(diarization, "speaker_diarization", diarization)
         return [
             SpeakerTurn(speaker_id=speaker, text="", start_time=turn.start, end_time=turn.end)
-            for turn, _, speaker in diarization.itertracks(yield_label=True)
+            for turn, _, speaker in annotation.itertracks(yield_label=True)
         ]
 
     async def diarize(self, audio_file_path: str) -> list[SpeakerTurn]:
