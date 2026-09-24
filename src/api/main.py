@@ -9,6 +9,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import time
 from contextlib import asynccontextmanager
 from decimal import Decimal
@@ -190,8 +191,18 @@ def _build_answer_generator():
     `src/infra/openai_answer_generator.py` for provider examples.
     """
     settings = get_settings()
+    api_key = (
+        settings.openai_api_key
+        or settings.nvidia_api_key
+        or os.environ.get("OPENAI_API_KEY")
+        or os.environ.get("NVIDIA_API_KEY")
+    )
     try:
-        primary = OpenAIAnswerGenerator(model=settings.answer_model, base_url=settings.answer_base_url)
+        primary = OpenAIAnswerGenerator(
+            model=settings.answer_model,
+            base_url=settings.answer_base_url,
+            api_key=api_key,
+        )
     except EmbeddingFailedError as exc:
         log_event(
             logger, logging.INFO, "answer_generator.openai_unavailable",

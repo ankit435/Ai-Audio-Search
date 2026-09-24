@@ -24,8 +24,8 @@ def test_settings_defaults_use_local_sentence_transformers_provider():
     assert settings.embedding_base_url is None
     assert settings.transcription_primary_backend == "faster-whisper"
     assert settings.transcription_fallback_backend == "openai-whisper"
-    assert settings.answer_model == "gpt-4o-mini"
-    assert settings.answer_base_url is None
+    assert settings.answer_model == "meta/muse-glimmer-30b"
+    assert settings.answer_base_url == "https://integrate.api.nvidia.com/v1"
 
 
 def test_settings_can_be_overridden_for_a_hosted_openai_compatible_provider(monkeypatch):

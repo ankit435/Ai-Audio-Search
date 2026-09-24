@@ -36,8 +36,10 @@ class Settings(BaseSettings):
     # Any OpenAI-compatible chat-completions endpoint works here — NVIDIA
     # NIM, OpenAI, vLLM/Ollama/local servers, etc. Leave `answer_base_url`
     # unset for hosted OpenAI. See `src/infra/openai_answer_generator.py`.
-    answer_model: str = "gpt-4o-mini"
-    answer_base_url: str | None = None
+    answer_model: str = "meta/muse-glimmer-30b"
+    answer_base_url: str | None = "https://integrate.api.nvidia.com/v1"
+    openai_api_key: str | None = None
+    nvidia_api_key: str | None = None
 
     log_level: str = "INFO"
     default_top_k: int = 10
