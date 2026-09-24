@@ -14,7 +14,9 @@ import time
 from contextlib import asynccontextmanager
 from decimal import Decimal
 from functools import lru_cache
-from uuid import UUID
+from pathlib import Path
+from typing import Any
+from uuid import UUID, uuid4
 
 
 def _json_default(obj: Any) -> Any:
@@ -24,12 +26,14 @@ def _json_default(obj: Any) -> Any:
         return str(obj)
     return str(obj)
 
+
 import asyncpg
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 
 from src.api.schemas import (
     AsyncIngestResponse,
+    BatchAsyncIngestResponse,
     ErrorResponse,
     FeedbackRequest,
     IngestRequest,
@@ -345,6 +349,54 @@ async def get_job_status(job_id: UUID) -> JobStatusResponse:
         last_error=row["last_error"],
         created_at=row["created_at"].isoformat(),
         updated_at=row["updated_at"].isoformat(),
+    )
+
+
+UPLOAD_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "uploads"
+
+
+@app.post(
+    "/ingest/upload",
+    response_model=BatchAsyncIngestResponse,
+    status_code=202,
+    summary="Upload audio file(s) for asynchronous batch ingestion",
+    description=(
+        "Uploads one or more audio files via multipart `UploadFile`, saves them to disk, "
+        "and enqueues each file into the PostgreSQL job queue (`ingestion_job`). "
+        "Returns immediately with job IDs for asynchronous background worker processing."
+    ),
+    tags=["ingest"],
+)
+async def ingest_upload(
+    files: list[UploadFile] = File(...),
+    job_queue: PostgresJobQueue = Depends(get_job_queue),
+) -> BatchAsyncIngestResponse:
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    batch_id = uuid4()
+    jobs: list[AsyncIngestResponse] = []
+
+    for file in files:
+        file_path = UPLOAD_DIR / file.filename
+        try:
+            contents = await file.read()
+            file_path.write_bytes(contents)
+            job_id = await job_queue.enqueue(str(file_path))
+            jobs.append(
+                AsyncIngestResponse(
+                    job_id=job_id,
+                    status="pending",
+                    audio_file_path=str(file_path),
+                    message=f"Uploaded and enqueued {file.filename} successfully.",
+                )
+            )
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"Failed to upload {file.filename}: {exc}") from exc
+
+    return BatchAsyncIngestResponse(
+        batch_id=batch_id,
+        total_files=len(jobs),
+        jobs=jobs,
+        message=f"Successfully uploaded and enqueued {len(jobs)} file(s) for background processing.",
     )
 
 

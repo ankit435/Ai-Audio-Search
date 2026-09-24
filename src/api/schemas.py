@@ -80,3 +80,12 @@ class JobStatusResponse(BaseModel):
     created_at: str
     updated_at: str
 
+
+class BatchAsyncIngestResponse(BaseModel):
+    """Batch audio upload response for `POST /ingest/upload`."""
+
+    batch_id: UUID
+    total_files: int
+    jobs: list[AsyncIngestResponse]
+    message: str = Field(default="Batch audio upload enqueued successfully for background processing.")
+

@@ -1,4 +1,4 @@
-"""Integration test for async job queue API endpoints (`POST /ingest/async` & `GET /ingest/jobs/{job_id}`).
+"""Integration test for async job queue API endpoints (`POST /ingest/async`, `POST /ingest/upload`, & `GET /ingest/jobs/{job_id}`).
 """
 
 from __future__ import annotations
@@ -59,4 +59,21 @@ async def test_async_ingest_api_enqueue_and_check_status(pool, tmp_path):
         assert status_data["status"] in ("pending", "processing", "done")
 
     # Cleanup DB row
+    await pool.execute("DELETE FROM ingestion_job WHERE job_id = $1", uuid.UUID(job_id))
+
+
+@pytest.mark.asyncio
+async def test_upload_file_batch_ingest_api(pool):
+    fname = f"batch_upload_{uuid.uuid4().hex[:8]}.wav"
+    files = [("files", (fname, b"test raw wav data", "audio/wav"))]
+
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.post("/ingest/upload", files=files)
+        assert response.status_code == 202
+        data = response.json()
+        assert "batch_id" in data
+        assert data["total_files"] == 1
+        assert len(data["jobs"]) == 1
+        job_id = data["jobs"][0]["job_id"]
+
     await pool.execute("DELETE FROM ingestion_job WHERE job_id = $1", uuid.UUID(job_id))
