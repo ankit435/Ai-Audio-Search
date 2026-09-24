@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FastAPI: Run",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "src.api.main:app",
+                "--port",
+                "8000"
+            ],
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.env",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "justMyCode": true
+        }
+    ]
+}

@@ -11,8 +11,17 @@ import json
 import logging
 import time
 from contextlib import asynccontextmanager
+from decimal import Decimal
 from functools import lru_cache
 from uuid import UUID
+
+
+def _json_default(obj: Any) -> Any:
+    if isinstance(obj, Decimal):
+        return float(obj)
+    if isinstance(obj, UUID):
+        return str(obj)
+    return str(obj)
 
 import asyncpg
 from fastapi import Depends, FastAPI, HTTPException
@@ -346,11 +355,11 @@ async def search_stream(
     async def _event_source():
         try:
             async for event in service.search_stream(q, top_k=top_k):
-                yield f"event: {event['event']}\ndata: {json.dumps(event)}\n\n"
+                yield f"event: {event['event']}\ndata: {json.dumps(event, default=_json_default)}\n\n"
         except InvalidQueryError as exc:
-            yield f"event: error\ndata: {json.dumps({'error': str(exc)})}\n\n"
+            yield f"event: error\ndata: {json.dumps({'error': str(exc)}, default=_json_default)}\n\n"
         except DomainError as exc:
-            yield f"event: error\ndata: {json.dumps({'error': str(exc)})}\n\n"
+            yield f"event: error\ndata: {json.dumps({'error': str(exc)}, default=_json_default)}\n\n"
 
     return StreamingResponse(_event_source(), media_type="text/event-stream")
 

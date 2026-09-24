@@ -202,9 +202,9 @@ class SearchService:
                     "file_name": r.file_name,
                     "speaker_id": r.speaker_id,
                     "text_snippet": r.text_snippet,
-                    "start_time": r.start_time,
-                    "end_time": r.end_time,
-                    "score": r.score,
+                    "start_time": float(r.start_time),
+                    "end_time": float(r.end_time),
+                    "score": float(r.score),
                 }
                 for r in results
             ],
