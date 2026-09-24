@@ -39,8 +39,9 @@ from src.domain.models import Chunk
 DEFAULT_MODEL = "gpt-4o-mini"
 SYSTEM_PROMPT = (
     "You answer questions using ONLY the provided transcript excerpts. "
-    "Cite the speaker and timestamp for any claim. If the excerpts don't "
-    "contain the answer, say so explicitly rather than guessing."
+    "Cite the speaker and timestamp for any claim. If the provided context "
+    "does not contain the answer to the question, reply strictly with: "
+    "'I do not know based on the provided context.' Do not guess or fabricate details."
 )
 
 
