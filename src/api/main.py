@@ -6,21 +6,25 @@ and configures structured logging + app-level OpenAPI/Swagger metadata.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import time
 from contextlib import asynccontextmanager
 from functools import lru_cache
+from uuid import UUID
 
 import asyncpg
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 
 from src.api.schemas import (
+    AsyncIngestResponse,
     ErrorResponse,
     FeedbackRequest,
     IngestRequest,
     IngestResponse,
+    JobStatusResponse,
     SearchAnswerResponse,
     SearchResponse,
     SearchResultItemResponse,
@@ -28,6 +32,7 @@ from src.api.schemas import (
 from src.api.settings import Settings
 from src.application.feedback_service import FeedbackService
 from src.application.ingest_pipeline import IngestPipeline
+from src.application.ingestion_worker import IngestionWorker
 from src.application.search_answer_service import SearchAnswerService
 from src.application.search_service import SearchService
 from src.domain.exceptions import ChunkPersistenceError, DomainError, EmbeddingFailedError, InvalidQueryError
@@ -36,6 +41,7 @@ from src.infra.logging_config import configure_logging, log_event
 from src.infra.openai_answer_generator import OpenAIAnswerGenerator
 from src.infra.openai_compatible_embedder import OpenAICompatibleEmbedder
 from src.infra.postgres_feedback_repository import PostgresFeedbackRepository
+from src.infra.postgres_job_queue import PostgresJobQueue
 from src.infra.postgres_repositories import PostgresAudioFileRepository, PostgresChunkRepository
 from src.infra.pyannote_diarizer import PyannoteDiarizer
 from src.infra.resilient_answer_generator import ResilientAnswerGenerator
@@ -101,7 +107,22 @@ async def lifespan(app: FastAPI):
     # gracefully (single-speaker attribution) instead of failing outright.
     app.state.diarizer = ResilientDiarizer(primary=PyannoteDiarizer(), fallback=SingleSpeakerDiarizer())
 
+    # Background IngestionWorker: automatically polls `ingestion_job` table
+    # for async job queue processing (Stretch Goal).
+    job_queue = PostgresJobQueue(app.state.pool)
+    pipeline = IngestPipeline(
+        transcriber=app.state.transcriber,
+        diarizer=app.state.diarizer,
+        embedder=app.state.embedder,
+        chunk_repository=PostgresChunkRepository(app.state.pool),
+        audio_file_repository=PostgresAudioFileRepository(app.state.pool),
+    )
+    worker = IngestionWorker(job_queue=job_queue, ingest_pipeline=pipeline, worker_id="api-worker-1")
+    worker_task = asyncio.create_task(worker.run_forever(poll_interval_s=1.0))
+
     yield
+
+    worker_task.cancel()
     await app.state.pool.close()
 
 
@@ -136,6 +157,10 @@ def get_ingest_pipeline() -> IngestPipeline:
         chunk_repository=PostgresChunkRepository(pool),
         audio_file_repository=PostgresAudioFileRepository(pool),
     )
+
+
+def get_job_queue() -> PostgresJobQueue:
+    return PostgresJobQueue(app.state.pool)
 
 
 def get_feedback_service() -> FeedbackService:
@@ -245,6 +270,61 @@ async def ingest(
     return IngestResponse(
         audio_file_id=result.audio_file_id, chunk_count=result.chunk_count,
         duration_ms=result.duration_ms, skipped_existing=result.skipped_existing,
+    )
+
+
+@app.post(
+    "/ingest/async",
+    response_model=AsyncIngestResponse,
+    status_code=202,
+    summary="Stretch Goal — asynchronous audio ingestion via job queue",
+    description=(
+        "Enqueues an audio file into the PostgreSQL job queue (`ingestion_job`) "
+        "and returns immediately with a `job_id`. Background `IngestionWorker` "
+        "processes the file asynchronously. Inspect status via `GET /ingest/jobs/{job_id}`."
+    ),
+    tags=["ingest"],
+)
+async def ingest_async(
+    request: IngestRequest, job_queue: PostgresJobQueue = Depends(get_job_queue)
+) -> AsyncIngestResponse:
+    try:
+        job_id = await job_queue.enqueue(request.audio_file_path)
+    except DomainError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    return AsyncIngestResponse(
+        job_id=job_id,
+        status="pending",
+        audio_file_path=request.audio_file_path,
+        message="Job enqueued successfully for background processing.",
+    )
+
+
+@app.get(
+    "/ingest/jobs/{job_id}",
+    response_model=JobStatusResponse,
+    summary="Stretch Goal — check status of an async ingestion job",
+    description="Returns current status (`pending`, `processing`, `done`, `failed`), attempt count, and any error message.",
+    tags=["ingest"],
+)
+async def get_job_status(job_id: UUID) -> JobStatusResponse:
+    async with app.state.pool.acquire() as conn:
+        row = await conn.fetchrow(
+            "SELECT job_id, audio_file_path, status, attempts, last_error, created_at, updated_at FROM ingestion_job WHERE job_id = $1",
+            job_id,
+        )
+    if not row:
+        raise HTTPException(status_code=404, detail=f"Job {job_id} not found.")
+
+    return JobStatusResponse(
+        job_id=row["job_id"],
+        status=row["status"],
+        audio_file_path=row["audio_file_path"],
+        attempts=row["attempts"],
+        last_error=row["last_error"],
+        created_at=row["created_at"].isoformat(),
+        updated_at=row["updated_at"].isoformat(),
     )
 
 

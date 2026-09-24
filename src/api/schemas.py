@@ -58,3 +58,25 @@ class SearchAnswerResponse(BaseModel):
     query: str
     answer: str
     citations: list[SearchResultItemResponse]
+
+
+class AsyncIngestResponse(BaseModel):
+    """Stretch Goal — async job queue ingestion response for `POST /ingest/async`."""
+
+    job_id: UUID
+    status: str = Field(examples=["pending"])
+    audio_file_path: str
+    message: str = Field(default="Job enqueued successfully.")
+
+
+class JobStatusResponse(BaseModel):
+    """Stretch Goal — job status inspection for `GET /ingest/jobs/{job_id}`."""
+
+    job_id: UUID
+    status: str = Field(examples=["pending", "processing", "done", "failed"])
+    audio_file_path: str
+    attempts: int
+    last_error: str | None = None
+    created_at: str
+    updated_at: str
+
