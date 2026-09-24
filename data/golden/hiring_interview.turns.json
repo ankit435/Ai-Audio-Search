@@ -1,6 +1,6 @@
 {
   "file_name": "hiring_interview.wav",
-  "duration_seconds": 151.507,
+  "duration_seconds": 151.542,
   "speakers": [
     "SPEAKER_00",
     "SPEAKER_01"
@@ -25,126 +25,126 @@
       "speaker_id": "SPEAKER_00",
       "text": "That's great. We're actually hiring a senior backend engineer for our platform team right now, and message queue experience is exactly what we need.",
       "start_time": 15.877,
-      "end_time": 24.215
+      "end_time": 24.308
     },
     {
       "turn_index": 3,
       "speaker_id": "SPEAKER_01",
       "text": "I saw that in the job posting. I'm particularly interested in the platform team because of the focus on reliability and observability.",
-      "start_time": 24.815,
-      "end_time": 32.436
+      "start_time": 24.908,
+      "end_time": 32.528
     },
     {
       "turn_index": 4,
       "speaker_id": "SPEAKER_00",
       "text": "Let's talk about a specific scenario. Suppose a downstream service starts timing out intermittently. How would you debug that?",
-      "start_time": 33.036,
-      "end_time": 40.343
+      "start_time": 33.128,
+      "end_time": 40.401
     },
     {
       "turn_index": 5,
       "speaker_id": "SPEAKER_01",
       "text": "First I'd check the service's latency dashboards and error rates, then look at whether the timeouts correlate with deploys or traffic spikes.",
-      "start_time": 40.943,
-      "end_time": 48.591
+      "start_time": 41.001,
+      "end_time": 48.649
     },
     {
       "turn_index": 6,
       "speaker_id": "SPEAKER_01",
       "text": "If nothing obvious shows up, I'd add distributed tracing to follow a single request across services and find where the delay actually happens.",
-      "start_time": 49.191,
-      "end_time": 57.124
+      "start_time": 49.249,
+      "end_time": 57.182
     },
     {
       "turn_index": 7,
       "speaker_id": "SPEAKER_00",
       "text": "Good answer. Our hiring process includes a technical interview like this one, followed by a system design round, and then a conversation with the hiring manager.",
-      "start_time": 57.724,
-      "end_time": 67.108
+      "start_time": 57.782,
+      "end_time": 67.166
     },
     {
       "turn_index": 8,
       "speaker_id": "SPEAKER_01",
       "text": "That sounds reasonable. How long does the whole process usually take from first interview to an offer?",
-      "start_time": 67.708,
-      "end_time": 73.256
+      "start_time": 67.766,
+      "end_time": 73.314
     },
     {
       "turn_index": 9,
       "speaker_id": "SPEAKER_00",
       "text": "Typically two to three weeks, assuming scheduling goes smoothly on both sides.",
-      "start_time": 73.856,
-      "end_time": 78.534
+      "start_time": 73.914,
+      "end_time": 78.569
     },
     {
       "turn_index": 10,
       "speaker_id": "SPEAKER_00",
       "text": "Now let's do a quick system design question. How would you design a rate limiter for a public API?",
-      "start_time": 79.134,
-      "end_time": 84.772
+      "start_time": 79.169,
+      "end_time": 84.807
     },
     {
       "turn_index": 11,
       "speaker_id": "SPEAKER_01",
       "text": "I'd use a token bucket algorithm backed by a fast in-memory store like Redis, with a small amount of local caching to reduce round trips.",
-      "start_time": 85.372,
-      "end_time": 93.444
+      "start_time": 85.407,
+      "end_time": 93.479
     },
     {
       "turn_index": 12,
       "speaker_id": "SPEAKER_01",
       "text": "Each client would get a bucket that refills at a fixed rate, and requests are rejected once the bucket is empty.",
-      "start_time": 94.044,
-      "end_time": 100.345
+      "start_time": 94.079,
+      "end_time": 100.38
     },
     {
       "turn_index": 13,
       "speaker_id": "SPEAKER_00",
       "text": "What would you do differently if the rate limiter needed to work across multiple data centers?",
-      "start_time": 100.945,
-      "end_time": 105.72
+      "start_time": 100.98,
+      "end_time": 105.754
     },
     {
       "turn_index": 14,
       "speaker_id": "SPEAKER_01",
       "text": "I'd probably accept some looseness in the global limit and use per region buckets with periodic synchronization, rather than trying to enforce a perfectly exact global count.",
-      "start_time": 106.32,
-      "end_time": 116.122
+      "start_time": 106.354,
+      "end_time": 116.156
     },
     {
       "turn_index": 15,
       "speaker_id": "SPEAKER_00",
       "text": "That's a solid tradeoff. One more thing, what interests you most about our engineering culture?",
-      "start_time": 116.722,
-      "end_time": 121.887
+      "start_time": 116.756,
+      "end_time": 121.921
     },
     {
       "turn_index": 16,
       "speaker_id": "SPEAKER_01",
       "text": "I really like that the team writes public design docs before big changes. It makes it easier to give feedback early instead of after the code is already written.",
-      "start_time": 122.487,
-      "end_time": 131.408
+      "start_time": 122.521,
+      "end_time": 131.443
     },
     {
       "turn_index": 17,
       "speaker_id": "SPEAKER_00",
       "text": "We take that seriously. Every senior engineer here is expected to write at least one design doc per quarter for anything non trivial.",
-      "start_time": 132.008,
-      "end_time": 139.243
+      "start_time": 132.043,
+      "end_time": 139.278
     },
     {
       "turn_index": 18,
       "speaker_id": "SPEAKER_01",
       "text": "That matches how I like to work. Thanks again for the detailed walkthrough of the hiring process.",
-      "start_time": 139.843,
-      "end_time": 145.402
+      "start_time": 139.878,
+      "end_time": 145.437
     },
     {
       "turn_index": 19,
       "speaker_id": "SPEAKER_00",
       "text": "Thanks for your time today. We'll follow up within a week with next steps for the system design round.",
-      "start_time": 146.002,
-      "end_time": 151.507
+      "start_time": 146.037,
+      "end_time": 151.542
     }
   ]
 }

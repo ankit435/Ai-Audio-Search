@@ -64,7 +64,7 @@ def download_and_trim_episode(ep: dict) -> Path:
     print(f"Topic: {ep['topic']}")
     print(f"========================================================")
 
-    yt_dlp_bin = sys.executable.replace("python", "yt-dlp")
+    yt_dlp_bin = str(Path(sys.executable).parent / "yt-dlp")
     temp_raw = DATA_DIR / f"temp_raw_{ep['id']}"
 
     # 1. Download raw audio
